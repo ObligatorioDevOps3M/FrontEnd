@@ -32,5 +32,4 @@ jobs:
           aws-region: 'us-east-1'
 
       - name: Deploy to AWS S3
-        # the app build is made with nx
         run: aws s3 sync dist/apps/catalog s3://main-githubactions-obligatoriodevops --delete
