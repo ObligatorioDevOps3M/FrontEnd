@@ -20,6 +20,9 @@ jobs:
       - name: Dependencies Installation
         run: npm install
 
+      #- name: Run Linters
+      #  run: npm run linters-ci
+
       - name: App Build
         run: npm run build
 
@@ -32,4 +35,4 @@ jobs:
           aws-region: 'us-east-1'
 
       - name: Deploy to AWS S3
-        run: aws s3 sync dist/apps/catalog s3://main-githubactions-obligatoriodevops --delete
+        run: aws s3 sync dist/apps/catalog s3://fe-develop-githubactions-obligatoriodevops --delete
