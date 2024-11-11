@@ -34,5 +34,10 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: 'us-east-1'
 
-      - name: Deploy to AWS S3
-        run: aws s3 sync dist/apps/catalog s3://fe-develop-githubactions-obligatoriodevops --delete
+      - name: S3 Deploy
+        run: ./.github/scripts/deploy.sh
+        shell: bash
+        env:
+          S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET }}
+      #- name: Deploy to AWS S3
+      #  run: aws s3 sync dist/apps/catalog s3://fe-develop-githubactions-obligatoriodevops --delete
