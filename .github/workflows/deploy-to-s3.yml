@@ -30,7 +30,8 @@ jobs:
         run: npm run build
 
   deploy:
-    if: github.event.pull_request.merged == true
+    # only run the deployment job if the PR is merged and the branch is main, staging or develop
+    if: github.event.pull_request.merged == true && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/develop')
     needs: build
     runs-on: ubuntu-latest
     steps:
