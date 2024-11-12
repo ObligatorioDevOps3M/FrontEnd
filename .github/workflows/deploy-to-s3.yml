@@ -26,20 +26,3 @@ jobs:
 
       - name: App Build
         run: npm run build
-
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-      #     aws-region: 'us-east-1'
-
-      # - name: S3 Deploy
-      #   if: github.event.pull_request.merged == true
-      #   run: ./.github/scripts/deploy.sh
-      #   shell: bash
-      #   env:
-      #     S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET }}
-      #- name: Deploy to AWS S3
-      #  run: aws s3 sync dist/apps/catalog s3://fe-develop-githubactions-obligatoriodevops --delete
