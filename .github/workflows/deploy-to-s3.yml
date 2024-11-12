@@ -58,14 +58,13 @@ jobs:
           aws-region: 'us-east-1'
 
       - name: Set S3 Bucket Name
-        id: set-bucket-name
         run: |
           if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_MAIN }}" >> $GITHUB_ENV
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_MAIN }}"
           elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
-            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_STAGING }}" >> $GITHUB_ENV
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_STAGING }}"
           elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
-            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_DEV }}" >> $GITHUB_ENV
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_DEV }}"
           fi
 
       - name: Deploy to AWS S3
