@@ -1,6 +1,10 @@
 name: Deploy to AWS S3
 
-on: push
+on:
+  push:
+    branches: ['main', 'staging', 'develop']
+  pull_request:
+    branches: ['main', 'staging', 'develop']
 
 jobs:
   build:
@@ -22,10 +26,10 @@ jobs:
 
       - name: App Build
         run: npm run build
+
   deploy:
+    if: github.event.pull_request.merged == true
     needs: build
-    # only if merge
-    if: github.event_name == 'push' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
