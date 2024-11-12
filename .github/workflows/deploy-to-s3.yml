@@ -22,3 +22,33 @@ jobs:
 
       - name: App Build
         run: npm run build
+  deploy:
+    needs: build
+    # only if merge
+    if: github.event_name == 'push' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: NodeJs Setup
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '20.14.0'
+
+      - name: Dependencies Installation
+        run: npm install
+
+      - name: App Build
+        run: npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: 'us-east-1'
+
+      - name: Deploy to AWS S3
+        run: aws s3 sync dist/apps/catalog s3://fe-develop-githubactions-obligatoriodevops --delete
