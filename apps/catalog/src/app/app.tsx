@@ -7,7 +7,7 @@ export function App() {
     <>
       <NxWelcome title="catalog" />
       <div>
-        <h1>Probando Actions y Deploy</h1>
+        <h1>Probando Actions y Deploy en features</h1>
       </div>
     </>
   );
