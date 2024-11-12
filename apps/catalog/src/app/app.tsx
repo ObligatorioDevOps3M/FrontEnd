@@ -7,7 +7,7 @@ export function App() {
     <>
       <NxWelcome title="catalog" />
       <div>
-        <h1>Probando deploy condicional</h1>
+        <h1>Probando deploy condicional eliminando variables que no se usan</h1>
       </div>
     </>
   );
