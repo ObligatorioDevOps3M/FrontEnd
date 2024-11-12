@@ -5,6 +5,8 @@ on:
     branches: ['main', 'staging', 'develop', 'feature/*']
   pull_request:
     branches: ['main', 'staging', 'develop', 'feature/*']
+    types:
+      - closed
 
 jobs:
   build:
@@ -32,6 +34,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - run: |
+          echo The PR was merged
       - name: Checkout code
         uses: actions/checkout@v4.2.2
 
