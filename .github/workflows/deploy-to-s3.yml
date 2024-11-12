@@ -34,8 +34,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo The PR was merged
       - name: Checkout code
         uses: actions/checkout@v4.2.2
 
@@ -58,5 +56,16 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: 'us-east-1'
 
+      - name: Set S3 Bucket Name
+        id: set-bucket-name
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_MAIN }}" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_STAGING }}" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_DEV }}" >> $GITHUB_ENV
+          fi
+
       - name: Deploy to AWS S3
-        run: aws s3 sync dist/apps/catalog s3://fe-develop-githubactions-obligatoriodevops --delete
+        run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
