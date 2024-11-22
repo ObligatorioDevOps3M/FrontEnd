@@ -1,0 +1,71 @@
+name: Deploy to AWS S3
+
+on:
+  push:
+    branches: ['main', 'staging', 'develop', 'feature/*']
+  pull_request:
+    branches: ['main', 'staging', 'develop', 'feature/*']
+    types:
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: NodeJs Setup
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '20.14.0'
+
+      - name: Dependencies Installation
+        run: npm install
+
+      #- name: Run Linters
+      #  run: npm run linters-ci
+
+      - name: App Build
+        run: npm run build
+
+  deploy:
+    # only run the deployment job if the PR is merged and the branch is main, staging or develop
+    if: github.event.pull_request.merged == true && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/develop')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: NodeJs Setup
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '20.14.0'
+
+      - name: Dependencies Installation
+        run: npm install
+
+      - name: App Build
+        run: npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: 'us-east-1'
+
+      - name: Set S3 Bucket Name
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_MAIN }}" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_STAGING }}" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
+            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_DEV }}" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy to AWS S3
+        run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
