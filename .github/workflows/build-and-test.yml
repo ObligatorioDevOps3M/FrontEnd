@@ -8,11 +8,7 @@ on:
     types:
       - closed
   workflow_call:
-    inputs:
-      environment:
-        description: 'Deployment environment'
-        required: true
-        type: string
+    
 jobs:
   build:
     runs-on: ubuntu-latest
