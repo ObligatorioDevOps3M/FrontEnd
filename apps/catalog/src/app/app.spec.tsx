@@ -6,8 +6,7 @@ describe('App', () => {
   it('should render successfully', () => {
     const { baseElement } = render(<App />);
 
-    //expect(baseElement).toBeTruthy();
-    expect(baseElement).toBeFalsy();
+    expect(baseElement).toBeTruthy();
   });
 
   it('should have a greeting as the title', () => {
