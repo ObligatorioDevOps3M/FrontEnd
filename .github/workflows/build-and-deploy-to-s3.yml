@@ -54,7 +54,7 @@ jobs:
 
       - name: Set S3 Bucket Name
         run: |
-          FILE_URL="https://github.com/ObligatorioDevOps3M/DevOps/blob/main/terraform/options-develop/s3_bucket_name.txt"
+          FILE_URL="https://raw.githubusercontent.com/ObligatorioDevOps3M/DevOps/refs/heads/main/terraform/options-develop/s3_bucket_name.txt"
           VALUE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $FILE_URL)
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
 
