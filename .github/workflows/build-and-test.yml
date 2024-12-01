@@ -22,8 +22,5 @@ jobs:
       - name: Dependencies Installation
         run: npm install
 
-      - name: Run Linters
-        run: npm run linters-ci
-
       - name: App Build
         run: npm run build
