@@ -1,30 +1,16 @@
-name: Build and deploy to S3
+name: Build and Test
 
 on:
-  pull_request:
-    branches: ['main', 'staging', 'develop', 'test']
-    types:
-      - closed
-
+  push:
+    branches: ['main', 'staging', 'develop', 'feature/*', 'test']
+    
 jobs:
   build:
-    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.2.2
+      
 
-      - name: NodeJs Setup
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version: '20.14.0'
-
-      - name: Dependencies Installation
-        run: npm install
-
-      - name: App Build
-        run: npm run build
-
+      # Testing de obtención de valor desde repo
       - name: Checkout external repository
         uses: actions/checkout@v3
         with:
@@ -56,4 +42,7 @@ jobs:
 
       - name: Deploy to AWS S3
         run: aws s3 sync dist/apps/catalog s3://${{env.BUCKET_NAME}} --delete
+      #Fin testing
+
+
 
