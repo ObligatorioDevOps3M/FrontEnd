@@ -8,6 +8,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: NodeJs Setup
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '20.14.0'
+
+      - name: Dependencies Installation
+        run: npm install
+
+      - name: App Build
+        run: | 
+          npm test
+          npm run build
 
       # Testing de obtención de valor desde repo
       - name: Checkout external repository
@@ -37,19 +52,5 @@ jobs:
         run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
       #Fin testing
 
-      - name: Checkout code
-        uses: actions/checkout@v4.2.2
 
-      - name: NodeJs Setup
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version: '20.14.0'
-
-      - name: Dependencies Installation
-        run: npm install
-
-      - name: App Build
-        run: | 
-          npm test
-          npm run build
 
