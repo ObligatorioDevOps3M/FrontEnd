@@ -38,7 +38,7 @@ jobs:
             fi
           VALUE=$(cat devops-repo-directory/terraform/options-${ENV_TO_DEPLOY}/s3_bucket_name.txt)
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
-          echo s3://$BUCKET_NAME
+          echo "s3://${BUCKET_NAME}"
 
       - name: Deploy to AWS S3
         run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
