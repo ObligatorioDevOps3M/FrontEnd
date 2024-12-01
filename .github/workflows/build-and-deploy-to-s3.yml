@@ -1,11 +1,14 @@
-name: Build and Test
+name: Build and deploy to S3
 
 on:
-  push:
-    branches: ['main', 'staging', 'develop', 'feature/*', 'test']
-    
+  pull_request:
+    branches: ['main', 'staging', 'develop', 'test']
+    types:
+      - closed
+
 jobs:
   build:
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,11 +23,8 @@ jobs:
         run: npm install
 
       - name: App Build
-        run: | 
-          npm test
-          npm run build
+        run: npm run build
 
-      # Testing de obtención de valor desde repo
       - name: Checkout external repository
         uses: actions/checkout@v3
         with:
@@ -43,20 +43,17 @@ jobs:
 
       - name: Set S3 Bucket Name
         run: |
-          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-            echo "ENV_TO_DEPLOY=main" >> $GITHUB_ENV
-            elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
-              echo "ENV_TO_DEPLOY=staging" >> $GITHUB_ENV
-            else 
-              echo "ENV_TO_DEPLOY=develop" >> $GITHUB_ENV
-            fi
-
-          VALUE=$(cat devops-repo-directory/terraform/options-${ENV_TO_DEPLOY}/s3_bucket_name.txt)
+         BRANCH_NAME=${GITHUB_REF##*/}
+          if [[ "$BRANCH_NAME" == "main" ]]; then
+            CUSTOM_ENV_VAR="main"
+          elif [[ "$BRANCH_NAME" == staging ]]; then
+            CUSTOM_ENV_VAR="staging"
+          else
+            CUSTOM_ENV_VAR="develop"
+          fi
+          VALUE=$(cat devops-repo-directory/terraform/options-${CUSTOM_ENV_VAR}/s3_bucket_name.txt)
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
 
       - name: Deploy to AWS S3
-        run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
-      #Fin testing
-
-
+        run: aws s3 sync dist/apps/catalog s3://${{env.BUCKET_NAME}} --delete
 
