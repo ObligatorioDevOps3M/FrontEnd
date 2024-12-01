@@ -37,6 +37,7 @@ jobs:
           else
             echo "CUSTOM_ENV_VAR=develop" >> $GITHUB_ENV
           fi
+          echo $CUSTOM_ENV_VAR
           VALUE=$(cat devops-repo-directory/terraform/options-$CUSTOM_ENV_VAR/s3_bucket_name.txt)
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
           echo "s3://${BUCKET_NAME}"
