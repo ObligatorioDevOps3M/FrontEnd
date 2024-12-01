@@ -3,10 +3,6 @@ name: Build and Test
 on:
   push:
     branches: ['main', 'staging', 'develop', 'feature/*', 'test']
-  pull_request:
-    branches: ['main', 'staging', 'develop', 'feature/*', 'test']
-    types:
-      - closed
     
 jobs:
   build:
