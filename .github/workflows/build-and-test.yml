@@ -33,7 +33,9 @@ jobs:
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
           echo "BUCKET_NAME=$VALUE" 
 
-      # Fin testing
+      - name: Deploy to AWS S3
+        run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
+      #Fin testing
 
       - name: Checkout code
         uses: actions/checkout@v4.2.2
