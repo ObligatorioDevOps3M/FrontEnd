@@ -1,0 +1,29 @@
+name: Deploy to AWS S3
+
+on:
+  push:
+    branches: ['main', 'staging', 'develop', 'feature/*']
+  pull_request:
+    branches: ['main', 'staging', 'develop', 'feature/*']
+    types:
+      - closed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: NodeJs Setup
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '20.14.0'
+
+      - name: Dependencies Installation
+        run: npm install
+
+      - name: Run Linters
+        run: npm run linters-ci
+
+      - name: App Build
+        run: npm run build
