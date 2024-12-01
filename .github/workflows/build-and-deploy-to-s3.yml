@@ -1,25 +1,33 @@
 name: Deploy to AWS S3
 
 on:
-  push:
-    branches: ['main', 'staging', 'develop']
   pull_request:
     branches: ['main', 'staging', 'develop']
     types:
       - closed
 
 jobs:
-  test-and-build:
-    uses: ObligatorioDevOps3M/FrontEndReact/.github/workflows/build-and-test.yml@feature/deploy-to-s3-from-config
-    with:
-        environment: develop
+  build:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
 
-    
+      - name: NodeJs Setup
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '20.14.0'
+
+      - name: Dependencies Installation
+        run: npm install
+
+      - name: App Build
+        run: npm run build
 
   deploy:
-    # only run the deployment job if the PR is merged and the branch is main, staging or develop
-    if: github.event.pull_request.merged == true && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/develop')
-    needs:  test-and-build
+    if: ${{ github.event.pull_request.merged == true }}
+    needs:  build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
