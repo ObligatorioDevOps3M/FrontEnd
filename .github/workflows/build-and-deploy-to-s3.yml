@@ -54,13 +54,9 @@ jobs:
 
       - name: Set S3 Bucket Name
         run: |
-          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_MAIN }}" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
-            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_STAGING }}" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
-            echo "BUCKET_NAME=${{ secrets.S3_ORIGIN_BUCKET_DEV }}" >> $GITHUB_ENV
-          fi
+          FILE_URL="https://github.com/ObligatorioDevOps3M/DevOps/blob/main/terraform/options-develop/s3_bucket_name.txt"
+          VALUE=$(curl -s $FILE_URL)
+          echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
 
       - name: Deploy to AWS S3
         run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
