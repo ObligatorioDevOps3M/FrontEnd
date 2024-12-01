@@ -44,14 +44,14 @@ jobs:
       - name: Set S3 Bucket Name
         run: |
           if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-            echo "ENVIRONMENT=main" >> $GITHUB_ENV
+            echo "ENV_TO_DEPLOY=main" >> $GITHUB_ENV
             elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
-              echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+              echo "ENV_TO_DEPLOY=staging" >> $GITHUB_ENV
             elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]] || [[ "${GITHUB_REF}" == "refs/heads/test" ]]; then
-              echo "ENVIRONMENT=develop" >> $GITHUB_ENV
+              echo "ENV_TO_DEPLOY=develop" >> $GITHUB_ENV
             fi
 
-          VALUE=$(cat devops-repo-directory/terraform/options-$ENVIRONMENT/s3_bucket_name.txt)
+          VALUE=$(cat devops-repo-directory/terraform/options-$ENV_TO_DEPLOY/s3_bucket_name.txt)
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
           echo "BUCKET_NAME=$VALUE" 
 
