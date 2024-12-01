@@ -31,13 +31,13 @@ jobs:
         run: |
          BRANCH_NAME=${GITHUB_REF##*/}
           if [[ "$BRANCH_NAME" == "main" ]]; then
-            echo "CUSTOM_ENV_VAR=main" >> $GITHUB_ENV
+            CUSTOM_ENV_VAR="main"
           elif [[ "$BRANCH_NAME" == staging ]]; then
-            echo "CUSTOM_ENV_VAR=staging" >> $GITHUB_ENV
+            CUSTOM_ENV_VAR="staging"
           else
-            echo "CUSTOM_ENV_VAR=develop" >> $GITHUB_ENV
+            CUSTOM_ENV_VAR="develop"
           fi
-          VALUE=$(cat devops-repo-directory/terraform/options-$CUSTOM_ENV_VAR/s3_bucket_name.txt)
+          VALUE=$(cat devops-repo-directory/terraform/options-${CUSTOM_ENV_VAR}/s3_bucket_name.txt)
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
           echo "s3://${BUCKET_NAME}"
 
