@@ -41,18 +41,16 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: 'us-east-1'
 
-      - name: Setup environment name
-        run : | 
-          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-          echo "ENVIRONMENT=main" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
-            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]] || [[ "${GITHUB_REF}" == "refs/heads/test" ]]; then
-            echo "ENVIRONMENT=develop" >> $GITHUB_ENV
-          fi
-
       - name: Set S3 Bucket Name
         run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "ENVIRONMENT=main" >> $GITHUB_ENV
+            elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+              echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+            elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]] || [[ "${GITHUB_REF}" == "refs/heads/test" ]]; then
+              echo "ENVIRONMENT=develop" >> $GITHUB_ENV
+            fi
+
           VALUE=$(cat devops-repo-directory/terraform/options-$ENVIRONMENT/s3_bucket_name.txt)
           echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
           echo "BUCKET_NAME=$VALUE" 
