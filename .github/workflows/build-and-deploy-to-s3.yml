@@ -25,20 +25,20 @@ jobs:
       - name: App Build
         run: npm run build
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: 'us-east-1'
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+      #     aws-region: 'us-east-1'
 
-      - name: Set S3 Bucket Name
-        run: |
-          FILE_URL="https://raw.githubusercontent.com/ObligatorioDevOps3M/DevOps/refs/heads/main/terraform/options-develop/s3_bucket_name.txt"
-          VALUE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $FILE_URL)
-          echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
+      # - name: Set S3 Bucket Name
+      #   run: |
+      #     FILE_URL="https://raw.githubusercontent.com/ObligatorioDevOps3M/DevOps/refs/heads/main/terraform/options-develop/s3_bucket_name.txt"
+      #     VALUE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $FILE_URL)
+      #     echo "BUCKET_NAME=$VALUE" >> $GITHUB_ENV
 
-      - name: Deploy to AWS S3
-        run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
+      # - name: Deploy to AWS S3
+      #   run: aws s3 sync dist/apps/catalog s3://$BUCKET_NAME --delete
 
