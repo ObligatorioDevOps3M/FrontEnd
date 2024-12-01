@@ -24,4 +24,7 @@ jobs:
         run: npm install
 
       - name: App Build
-        run: npm run build
+        run: | 
+          npm ci
+          npm run build
+          npm test
