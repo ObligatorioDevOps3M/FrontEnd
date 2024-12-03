@@ -5,7 +5,9 @@ on:
     branches: ['main', 'staging', 'develop', 'test']
     types:
       - closed
-
+env:
+  BUCKET_NAME: 
+    
 jobs:
   build:
     if: ${{ github.event.pull_request.merged == true }}
