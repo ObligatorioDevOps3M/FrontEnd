@@ -1,10 +1,12 @@
 name: Build and deploy to S3
 
 on:
+  push:
+    branches: [ "main" , "staging" , "develop" , "feature/*"]
   pull_request:
-    branches: ['main', 'staging', 'develop', 'test']
-    #types:
-    #  - closed
+    branches: [ 'main' , 'staging' , 'develop' , "feature/*"]
+    types:
+     - closed
 env:
   BUCKET_NAME: 
     
