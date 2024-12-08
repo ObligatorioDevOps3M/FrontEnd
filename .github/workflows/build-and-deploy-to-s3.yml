@@ -48,7 +48,7 @@ jobs:
         run: |
           BRANCH_NAME=${GITHUB_REF##*/}
            if [[ "$BRANCH_NAME" == "main" ]]; then
-             CUSTOM_ENV_VAR="main"
+             CUSTOM_ENV_VAR="production"
            elif [[ "$BRANCH_NAME" == staging ]]; then
              CUSTOM_ENV_VAR="staging"
            else
