@@ -3,8 +3,8 @@ name: Build and deploy to S3
 on:
   pull_request:
     branches: ['main', 'staging', 'develop', 'test']
-    types:
-      - closed
+    #types:
+    #  - closed
 env:
   BUCKET_NAME: 
     
