@@ -1,16 +1,19 @@
 name: Build and deploy to S3
 
 on:
+  push:
+    branches: [ "main" , "staging" , "develop" , "feature/*"]
   pull_request:
-    branches: ['main', 'staging', 'develop', 'test']
+    branches: [ 'main' , 'staging' , 'develop' , "feature/*"]
     types:
-      - closed
+     - closed
+
 env:
   BUCKET_NAME: 
     
 jobs:
   build:
-    if: ${{ github.event.pull_request.merged == true }}
+    
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -48,7 +51,7 @@ jobs:
         run: |
           BRANCH_NAME=${GITHUB_REF##*/}
            if [[ "$BRANCH_NAME" == "main" ]]; then
-             CUSTOM_ENV_VAR="main"
+             CUSTOM_ENV_VAR="production"
            elif [[ "$BRANCH_NAME" == staging ]]; then
              CUSTOM_ENV_VAR="staging"
            else
