@@ -5,7 +5,7 @@ import NxWelcome from './nx-welcome';
 export function App() {
   return (
     <>
-      <NxWelcome title="Federico" />
+      <NxWelcome title="catalog" />
       <div>
         <h1>Probando deploy condicional eliminando variables que no se usan</h1>
       </div>
